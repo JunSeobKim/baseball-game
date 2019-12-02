@@ -1,0 +1,9 @@
+{
+  "name": "baseball-game",
+  "version": "1.0.0",
+  "description": "Baseball game with Javascript",
+  "main": "index.js",
+  "repository": "https://github.com/JunSeobKim/baseball-game",
+  "author": "MainDesktop_KimJunSeob <wnstjq616@gmail.com>",
+  "license": "MIT"
+}
