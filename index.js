@@ -2,8 +2,15 @@ const players = require("./players");
 
 console.log("신나는 야구 게임!");
 
-const score = 0; // 점수
-const ballCount = [0, 0, 0, 0]; // 스트라이크, 볼, 안타, 아웃
+let score = 0; // 점수
+let ballCount = [0, 0, 0, 0]; // 스트라이크, 볼, 안타, 아웃
+let nowTeam = 1;
+let now = 0;
+let out = 0;
+let scoreTeam1 = 0;
+let scoreTeam2 = 0;
+let player = 1;
+let rotation = [[], [], [], [], [], [], [], [], [], [], [], []]; // 1회초 ~ 6회말
 
 function main() {
   for (;;) {
@@ -22,6 +29,7 @@ function main() {
         console.log(team2);
         break;
       case 2:
+        gameStart();
         break;
       case -1:
         break;
@@ -29,27 +37,55 @@ function main() {
   }
 }
 
-function randomBallCount() {
-  const randomInt = Math.floor(Math.random() * (5 - 1) + 1);
-  switch (randomInt) {
-    case 1: // 스트라이크
-      console.log("스트라이크!");
-      ballCount[0] += 1;
-      break;
-    case 2: // 볼
-      console.log("볼!");
-      ballCount[1] += 1;
-      break;
-    case 3: // 안타
-      console.log("안타!");
-      ballCount[2] += 1;
-      nextBatter();
-      break;
-    case 4: // 아웃
-      console.log("아웃!");
-      ballCount[3] += 1;
-      nextBatter();
-      break;
+function randomBallCount1(player) {
+  let randomInt1 = Math.random();
+  if (randomInt1 < team1[player][1]) {
+    console.log("안타!");
+    ballCount[2] += 1;
+    nextBatter();
+  } else if (
+    team1[player][1] <= randomInt1 &&
+    randomInt1 < (11 + 10 * team1[player][1]) / 20
+  ) {
+    console.log("스트라이크!");
+    ballCount[0] += 1;
+  } else if (
+    randomInt1 < (11 + 10 * team1[player][1]) / 20 <= randomInt1 &&
+    randomInt1 < 0.9
+  ) {
+    console.log("볼!");
+    ballCount[1] += 1;
+  } else if (0.9 <= randomInt1) {
+    console.log("아웃!");
+    ballCount[3] += 1;
+    nextBatter();
+  }
+  ballCountCheck();
+  console.log(`${ballCount[0]}S ${ballCount[1]}B ${ballCount[3]}O\n`);
+}
+
+function randomBallCount2(player) {
+  let randomInt2 = Math.random();
+  if (randomInt2 < team2[player][1]) {
+    console.log("안타!");
+    ballCount[2] += 1;
+    nextBatter();
+  } else if (
+    team2[player][1] <= randomInt2 &&
+    randomInt2 < (11 + 10 * team2[player][1]) / 20
+  ) {
+    console.log("스트라이크!");
+    ballCount[0] += 1;
+  } else if (
+    randomInt2 < (11 + 10 * team2[player][1]) / 20 <= randomInt2 &&
+    randomInt2 < 0.9
+  ) {
+    console.log("볼!");
+    ballCount[1] += 1;
+  } else if (0.9 <= randomInt2) {
+    console.log("아웃!");
+    ballCount[3] += 1;
+    nextBatter();
   }
   ballCountCheck();
   console.log(`${ballCount[0]}S ${ballCount[1]}B ${ballCount[3]}O\n`);
@@ -60,6 +96,7 @@ function nextBatter() {
   if (ballCount[3] < 3) {
     console.log("다음 타자가 타석에 입장했습니다.");
   }
+  out = 1;
   ballCount[0] = 0;
   ballCount[1] = 0;
 }
@@ -82,15 +119,64 @@ function ballCountCheck() {
 
 // 게임 시작
 function gameStart() {
-  console.log("첫 번째 타자가 타석에 입장했습니다.\n");
-  for (;;) {
-    randomBallCount();
-    // 아웃 체크
-    if (ballCount[3] == 3) {
-      console.log(`최종 안타수: ${ballCount[2]}`);
-      console.log("GAME OVER");
+  console.log(`1회초 ${team1[0]} 공격
+  `);
+  for (; player < 10; player++) {
+    if (nowTeam == 1) {
+      for (;;) {
+        console.log(`${team1[player][0]}`);
+        randomBallCount1(player);
+        if (out == 1) {
+          out = 0;
+          break;
+        }
+      }
+      outCheck();
+    }
+    if (nowTeam == 2) {
+      for (;;) {
+        console.log(`${team2[player][0]}`);
+        randomBallCount2(player);
+        if (out == 1) {
+          out = 0;
+          break;
+        }
+      }
+      outCheck();
+    }
+    if (now == 12) {
+      console.log(`경기 종료
+      ${team1[0]} VS ${team2[0]}
+      ${scoreTeam1} : ${scoreTeam2}
+      Thank you!`);
       break;
     }
+    if (player == 9) {
+      player = 0;
+    }
+  }
+}
+// 아웃, 공수교대 체크
+function outCheck() {
+  if (ballCount[3] == 3) {
+    console.log(`최종 안타수: ${ballCount[2]}`);
+    console.log("공수 교대");
+    player = 1;
+    score = ballCount[2] - 3; //득점
+    if (score <= 0) {
+      score = 0;
+    }
+    rotation[now] = score; // 득점 저장
+    score = 0; // 득점 초기화
+    ballCount = [0, 0, 0, 0]; // 볼카운트 초기화
+    if (nowTeam == 1) {
+      scoreTeam1 += rotation[now];
+      nowTeam = 2;
+    } else if (nowTeam == 2) {
+      scoreTeam2 += rotation[now];
+      nowTeam = 1;
+    }
+    now++;
   }
 }
 

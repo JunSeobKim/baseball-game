@@ -40,3 +40,12 @@ Baseball game with Javascript
   - 팀이름을 입력하지 않을 시 "Unknown team" 자동입력
   - 플레이어의 타율 범위 밖 입력 시 재시작 문구
   - 플레이어의 타율 Float 이외의 타입 입력 시 숫자만 저장
+
+### 요구사항 2: 시합하기 기능 구현
+
+- randomBallCount1()함수에서 각 타자들의 타율에 따라 확률 조정
+  - switch case 문을 if 문으로 변경
+- 팀1, 팀2 볼카운트 확률을 위해 randomBallCount() 분할
+- gameStart()함수에서 한 선수가 끝날 때 까지 for문 무한루프
+- outCheck()함수를 통해 3아웃이 되면 초기화 후 공수 교대
+  - 점수를 rotation[]에 저장

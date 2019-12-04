@@ -39,7 +39,7 @@ function dataInputTeam2() {
 
   // 팀이름 입력
   team2[0] = readlineSync.question(
-    "Please enter the name of the first team > "
+    "Please enter the name of the second team > "
   );
   // 선수 입력
   for (let i = 1; i < 10; i++) {
