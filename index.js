@@ -1,8 +1,33 @@
+const players = require("./players");
+
 console.log("신나는 야구 게임!");
 
 const score = 0; // 점수
 const ballCount = [0, 0, 0, 0]; // 스트라이크, 볼, 안타, 아웃
-const UI = `${ballCount[0]}S ${ballCount[1]}B ${ballCount[3]}O`;
+
+function main() {
+  for (;;) {
+    players.selectMenu();
+    // CANCEL 선택 시 종료
+    if (menuNumber == -1) {
+      break;
+    }
+    switch (menuNumber) {
+      case 0:
+        players.dataInputTeam1();
+        players.dataInputTeam2();
+        break;
+      case 1:
+        console.log(team1);
+        console.log(team2);
+        break;
+      case 2:
+        break;
+      case -1:
+        break;
+    }
+  }
+}
 
 function randomBallCount() {
   const randomInt = Math.floor(Math.random() * (5 - 1) + 1);
@@ -68,4 +93,5 @@ function gameStart() {
     }
   }
 }
-gameStart();
+
+main();

@@ -26,3 +26,17 @@ Baseball game with Javascript
   - 스트라이크, 볼 카운트를 초기화시킨다.
 - gameStart() 함수
   - 3아웃이 될 경우 게임을 종료한다.
+
+## 2단계
+
+### 요구사항 1: 팀데이터 입력 및 저장
+
+- 관리의 용이성, 가독성을 위해 플레이어의 제어를 부분하는 곳을 players.js파일로 분할
+- 데이터 입력에 대한 부분은 readline-sync 라이브러리를 사용
+- index.js에 main()함수를 만들어 사용자가 선택한 메뉴에 따라 동작하게 구현
+  - players.js 파일에 selectMenu()함수로 구현
+- player.js에서 dataInputTeam1, dataInputTeam2로 야구팀 이름, 선수데이터 입력 구현
+- 여러가지 에러처리 기능 구현
+  - 팀이름을 입력하지 않을 시 "Unknown team" 자동입력
+  - 플레이어의 타율 범위 밖 입력 시 재시작 문구
+  - 플레이어의 타율 Float 이외의 타입 입력 시 숫자만 저장
